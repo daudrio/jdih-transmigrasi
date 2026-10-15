@@ -57,28 +57,44 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-stone-950/95 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 transition-colors">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-6 px-4 sm:px-6 py-3">
+    <header className="sticky top-0 z-40 bg-white/90 dark:bg-stone-950/90 backdrop-blur-md border-b border-stone-200/80 dark:border-stone-800/80 transition-colors shadow-xs">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 xl:gap-6 px-4 sm:px-6 py-2.5">
         
-        {/* Zone 1: Single text element wordmark in display face */}
+        {/* Zone 1: Brand Wordmark with Modern Emblem */}
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={() => setActiveTab('katalog')}
-            className="text-left group whitespace-nowrap shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-sm"
+            className="flex items-center gap-2.5 text-left group whitespace-nowrap shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-sm"
           >
-            <span className="text-base sm:text-lg font-bold tracking-tight text-stone-900 dark:text-stone-50 font-serif group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
-              JDIH Kemtrans RI
-            </span>
-            <span className="sr-only">Jaringan Dokumentasi dan Informasi Hukum Kementerian Transmigrasi Republik Indonesia</span>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-800 to-teal-950 flex items-center justify-center text-white shadow-sm ring-1 ring-emerald-600/30 group-hover:scale-105 transition-transform">
+              <Scale className="w-4 h-4 text-emerald-300" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-base sm:text-lg font-bold tracking-tight text-stone-900 dark:text-stone-50 font-serif group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                  JDIH Kemtrans RI
+                </span>
+                <span className="hidden sm:inline-block px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300/40 dark:border-emerald-700/40">
+                  RESMI
+                </span>
+              </div>
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 block -mt-0.5 leading-tight font-sans">
+                Kementerian Transmigrasi RI
+              </span>
+            </div>
           </button>
 
-          {/* Quick Indicator Badge to Open Evaluation Scoreboard */}
+          {/* Quick Indicator Badge to Open Evaluation Scoreboard with Pulse */}
           {onOpenScoreboard && (
             <button
               onClick={onOpenScoreboard}
-              className="hidden xl:flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-200 transition-colors cursor-pointer"
+              className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-all cursor-pointer shadow-2xs hover:scale-102"
               title="Lihat Evaluasi & Indikator Penilaian JDIHN 2026"
             >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
               <Award className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
               <span>JDIHN 2026: Kategori AA (100)</span>
             </button>
@@ -237,26 +253,26 @@ export const Header: React.FC<HeaderProps> = ({
         </nav>
 
         {/* Zone 3: Actions (Kios Onsite, Evaluasi Mandiri & Search) */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           {onOpenKiosk && (
             <button
               onClick={onOpenKiosk}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 border border-stone-300 dark:border-stone-700 rounded text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 text-xs font-semibold transition-colors"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 border border-emerald-600/30 dark:border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/40 rounded-lg text-emerald-900 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-xs font-semibold transition-all hover:scale-102 cursor-pointer shadow-2xs"
               title="Buka Simulasi Kios Elektronik & Pojok JDIH"
             >
-              <Monitor className="w-3.5 h-3.5 text-emerald-600" />
+              <Monitor className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Kios Onsite</span>
             </button>
           )}
 
           <button
             onClick={onOpenSearch}
-            className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-medium text-white bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-700 dark:hover:bg-emerald-600 rounded-md transition-colors whitespace-nowrap shrink-0 shadow-xs"
+            className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-emerald-800 to-teal-900 hover:from-emerald-700 hover:to-teal-800 rounded-lg transition-all whitespace-nowrap shrink-0 shadow-sm hover:shadow hover:scale-102 cursor-pointer"
             aria-label="Cari Dokumen Hukum"
           >
             <Search className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>Cari Regulasi</span>
-            <kbd className="hidden xl:inline-block px-1 py-0.2 bg-emerald-900/50 text-emerald-200 rounded text-[10px] font-mono">
+            <span>Cari</span>
+            <kbd className="hidden md:inline-block px-1.5 py-0.2 bg-white/20 text-white rounded text-[10px] font-mono font-normal">
               /
             </kbd>
           </button>

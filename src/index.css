@@ -49,6 +49,32 @@
     background: rgba(150, 150, 150, 0.5);
   }
 
+  /* Modern Minimalist Ambient & Interactive Polish */
+  .bg-radial-hero {
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.12), transparent 70%),
+      radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.05), transparent 40%);
+  }
+
+  .dark .bg-radial-hero {
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.18), transparent 70%),
+      radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.08), transparent 40%);
+  }
+
+  /* Glassmorphism subtle surface */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .dark .glass-card {
+    background: rgba(28, 25, 23, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
   /* Focus ring accessibility */
   :focus-visible {
     outline: 2px solid #059669;
@@ -73,3 +99,4 @@
     }
   }
 }
+

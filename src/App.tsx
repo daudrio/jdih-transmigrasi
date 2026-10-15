@@ -133,6 +133,17 @@ function MainAppContent() {
         setSelectedYear={setSelectedYear}
         onPerformSearch={handleHeroSearch}
         onSelectQuickTag={handleSelectQuickTag}
+        onNavigateTab={(tab) => {
+          setActiveTab(tab);
+          const elem = document.getElementById('katalog-section');
+          if (elem) elem.scrollIntoView({ behavior: 'smooth' });
+        }}
+        onOpenScoreboard={() => setIsScoreboardOpen(true)}
+        onOpenKiosk={() => setIsKioskOpen(true)}
+        onSelectRegulationById={(id) => {
+          const found = regulations.find(r => r.id === id);
+          if (found) setSelectedRegulation(found);
+        }}
       />
 
       {/* Main Content Area */}

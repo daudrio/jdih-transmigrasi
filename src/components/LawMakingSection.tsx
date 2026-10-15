@@ -109,17 +109,17 @@ export const LawMakingSection: React.FC<LawMakingSectionProps> = ({ initialCateg
         </div>
 
         {/* Submenu Tabs Bar (Mandatory 6 Submenus from Slide 9 Recommendation) */}
-        <div className="border-b border-stone-200 dark:border-stone-800 mb-6 overflow-x-auto pb-1">
-          <div className="flex items-center gap-1.5 min-w-max">
+        <div className="border-b border-stone-200/90 dark:border-stone-800/90 mb-6 overflow-x-auto pb-2">
+          <div className="flex items-center gap-2 min-w-max pb-1">
             {submenus.map((tab) => {
               const isActive = selectedCategory === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setSelectedCategory(tab.id)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap shrink-0 transition-colors ${
+                  className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-emerald-800 text-white dark:bg-emerald-700 dark:text-stone-50 font-semibold shadow-xs'
+                      ? 'bg-gradient-to-r from-emerald-800 to-teal-900 text-white shadow-sm scale-102'
                       : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800'
                   }`}
                   aria-pressed={isActive}
@@ -132,20 +132,20 @@ export const LawMakingSection: React.FC<LawMakingSectionProps> = ({ initialCateg
         </div>
 
         {/* Search & Counter Info */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-3 rounded-lg text-xs">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6 bg-white/90 dark:bg-stone-900/90 border border-stone-200/90 dark:border-stone-800/90 p-3.5 rounded-xl text-xs backdrop-blur-xs shadow-2xs">
           <div className="w-full sm:w-auto flex items-center gap-2">
-            <span className="text-stone-500">Cari dalam Pembentukan PUU:</span>
+            <span className="text-stone-600 dark:text-stone-400 font-semibold">Cari Naskah Pembentukan:</span>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Ketik kata kunci dokumen..."
-              className="px-2.5 py-1.5 border border-stone-300 dark:border-stone-700 rounded bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 w-full sm:w-64 focus:outline-hidden"
+              className="px-3 py-1.5 border border-stone-300 dark:border-stone-700 rounded-lg bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 w-full sm:w-72 focus:outline-hidden focus:ring-1 focus:ring-emerald-600"
             />
           </div>
 
-          <div className="text-stone-500">
-            Menampilkan <strong className="text-stone-800 dark:text-stone-200">{filteredDocs.length}</strong> naskah pendukung legislasi
+          <div className="text-stone-500 dark:text-stone-400">
+            Menampilkan <strong className="text-stone-800 dark:text-stone-200 tabular-nums px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800">{filteredDocs.length}</strong> naskah pendukung legislasi
           </div>
         </div>
 
@@ -154,7 +154,7 @@ export const LawMakingSection: React.FC<LawMakingSectionProps> = ({ initialCateg
           {filteredDocs.map((doc) => (
             <article
               key={doc.id}
-              className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-lg p-5 shadow-xs hover:border-stone-300 dark:hover:border-stone-700 transition-colors"
+              className="bg-white dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800/90 rounded-xl p-5 shadow-2xs hover:shadow-md hover:border-emerald-500/40 dark:hover:border-emerald-500/40 hover:-translate-y-0.5 transition-all duration-200 border-l-4 border-l-amber-600/80"
             >
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 {/* Zero-Pill Metadata */}
