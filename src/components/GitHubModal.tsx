@@ -25,7 +25,7 @@ interface GitHubModalProps {
 export const GitHubModal: React.FC<GitHubModalProps> = ({ isOpen, onClose }) => {
   const { announce } = useThemeAndA11y();
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-  const [githubUsername, setGithubUsername] = useState<string>('increed9a');
+  const [githubUsername, setGithubUsername] = useState<string>('daudrio');
   const [repoName, setRepoName] = useState<string>('jdih-transmigrasi');
 
   if (!isOpen) return null;
