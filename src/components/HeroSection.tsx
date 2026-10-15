@@ -106,6 +106,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     aria-label="Filter Tahun Regulasi"
                   >
                     <option value="ALL">Semua Tahun</option>
+                    <option value="2026">2026</option>
                     <option value="2025">2025</option>
                     <option value="2024">2024</option>
                     <option value="2021">2021</option>

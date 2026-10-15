@@ -5,9 +5,16 @@ import { useThemeAndA11y, TextScale } from '../context/ThemeAndA11yContext';
 interface A11yRibbonProps {
   onOpenHelpModal?: () => void;
   onOpenGitHubModal?: () => void;
+  onOpenScoreboard?: () => void;
+  onOpenSelfEval?: () => void;
 }
 
-export const A11yRibbon: React.FC<A11yRibbonProps> = ({ onOpenHelpModal, onOpenGitHubModal }) => {
+export const A11yRibbon: React.FC<A11yRibbonProps> = ({ 
+  onOpenHelpModal, 
+  onOpenGitHubModal,
+  onOpenScoreboard,
+  onOpenSelfEval
+}) => {
   const {
     isDark,
     toggleTheme,
@@ -33,14 +40,23 @@ export const A11yRibbon: React.FC<A11yRibbonProps> = ({ onOpenHelpModal, onOpenG
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-y-2 gap-x-4">
         {/* Left: Official Trust Indicator & Standards */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 font-medium text-emerald-800 dark:text-emerald-400">
+          <button
+            onClick={onOpenScoreboard}
+            className="flex items-center gap-1.5 font-medium text-emerald-800 dark:text-emerald-400 hover:underline cursor-pointer"
+            title="Buka Matriks Tindak Lanjut Penilaian JDIHN 2026"
+          >
             <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
-            <span className="tracking-tight">Portal Resmi JDIHN Terintegrasi</span>
-          </div>
+            <span className="tracking-tight font-semibold">Tindak Lanjut Evaluasi JDIHN 2026 (Kategori AA)</span>
+          </button>
           <span className="text-stone-400 dark:text-stone-600 hidden sm:inline" aria-hidden="true">·</span>
-          <span className="text-stone-500 dark:text-stone-400 hidden sm:inline">
-            Standar Aksesibilitas WCAG 2.1 AA
-          </span>
+          {onOpenSelfEval && (
+            <button
+              onClick={onOpenSelfEval}
+              className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 dark:hover:text-emerald-300 hidden sm:inline underline"
+            >
+              Evaluasi Mandiri 7 Aspek
+            </button>
+          )}
         </div>
 
         {/* Right: Quick Accessibility & Theme Controls */}

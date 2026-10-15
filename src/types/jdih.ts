@@ -6,7 +6,8 @@ export type RegulationType =
   | 'KEPMEN' 
   | 'SE' 
   | 'PUTUSAN' 
-  | 'MONOGRAFI';
+  | 'MONOGRAFI'
+  | 'RANCANGAN';
 
 export type RegulationStatus = 
   | 'Berlaku' 
@@ -24,11 +25,20 @@ export interface ClauseArticle {
 
 export interface RelatedRegulation {
   id: string;
-  relationType: 'Mencabut' | 'Dicabut Oleh' | 'Mengubah' | 'Diubah Oleh' | 'Melaksanakan' | 'Terkait';
+  relationType: 'Mencabut' | 'Dicabut Oleh' | 'Mengubah' | 'Diubah Oleh' | 'Melaksanakan' | 'Terkait' | 'Peraturan Pelaksanaan';
   title: string;
   year: number;
   number: string;
   type: RegulationType;
+}
+
+export interface LawMakingDocReference {
+  id: string;
+  type: 'Progsun' | 'Naskah Urgensi' | 'Rancangan' | 'Risalah Harmonisasi' | 'Hasil Manjau/AE';
+  title: string;
+  year: number;
+  downloadUrl?: string;
+  fileSize: string;
 }
 
 export interface Regulation {
@@ -55,20 +65,130 @@ export interface Regulation {
   mengingat: string[]; // Konsiderans Mengingat
   articles: ClauseArticle[];
   relatedRegulations: RelatedRegulation[];
+  implementingRegulations?: RelatedRegulation[]; // Peraturan Pelaksanaan
+  lawMakingSupportDocs?: LawMakingDocReference[]; // Dokumen terkait pembentukan PUU
   downloadCount: number;
   viewCount: number;
   fileSize: string;
   hasJudicialReview?: boolean; // Uji Materi di MK/MA
   judicialReviewNote?: string;
+  englishTranslationAvailable?: boolean;
+  englishTranslationUrl?: string;
 }
 
-export interface StatisticsData {
-  totalRegulations: number;
-  activeRegulations: number;
-  revokedRegulations: number;
-  amendedRegulations: number;
-  byType: { type: RegulationType; label: string; count: number }[];
-  byYear: { year: number; count: number }[];
+// Variabel 1 & 2: Dokumen Pembentukan PUU
+export interface LawMakingDocument {
+  id: string;
+  category: 'progsun' | 'naskah_urgensi' | 'rancangan' | 'risalah' | 'partisipasi_publik' | 'manjau_ae' | 'kajian';
+  categoryLabel: string;
+  title: string;
+  year: number;
+  documentNumber?: string;
+  targetRegulationTitle?: string;
+  initiatorUnit: string; // Unit pemrakarsa
+  dateCreated: string;
+  summary: string;
+  fileSize: string;
+  status: 'Dalam Penyusunan' | 'Tahap Harmonisasi' | 'Selesai / Diundangkan' | 'Konsultasi Publik Terbuka';
+  publicConsultationOpen?: boolean;
+  publicConsultationDeadline?: string;
+  feedbackCount?: number;
+}
+
+// Variabel 2: Khusus Metadata Putusan Pengadilan & Lembaga Quasi Peradilan
+export interface CourtJudicialDecision {
+  id: string;
+  courtType: 'Mahkamah Konstitusi' | 'Mahkamah Agung' | 'Pengadilan Tata Usaha Negara' | 'Pengadilan Negeri' | 'Komisi Informasi Pusat (KIP)' | 'Ombudsman RI';
+  caseNumber: string; // Nomor Perkara / Putusan
+  title: string;
+  year: number;
+  rulingDate: string; // Tanggal Putusan
+  parties: {
+    applicant: string; // Pemohon / Penggugat
+    respondent: string; // Termohon / Tergugat
+  };
+  rulingStatus: 'Menolak Seluruhnya' | 'Mengabulkan Sebagian' | 'Mengabulkan Seluruhnya' | 'Tidak Dapat Diterima (NO)';
+  verdictSummary: string; // Ringkasan Amar Putusan
+  benchJudges?: string[]; // Majelis Hakim / Komisioner
+  sourceGazette: string;
+  testedLawReference?: string; // PUU yang diuji
+  fileSize: string;
+  downloadCount: number;
+}
+
+// Variabel 2: Monografi & Artikel Hukum
+export interface MonographDocument {
+  id: string;
+  title: string;
+  type: 'Monografi Hukum' | 'Artikel Hukum' | 'Jurnal Ilmiah';
+  author: string;
+  publisher: string;
+  city: string;
+  year: number;
+  isbn?: string;
+  subject: string[];
+  summary: string;
+  pages: number;
+  fileSize: string;
+  downloadCount: number;
+}
+
+// Variabel 4: Layanan Peraturan Terjemahan (English Official Translation)
+export interface EnglishTranslationDocument {
+  id: string;
+  originalId: string;
+  originalTitle: string;
+  englishTitle: string;
+  type: string;
+  number: string;
+  year: number;
+  translatorAuthority: 'Direktorat Jenderal Peraturan Perundang-undangan (Ditjen PP)' | 'Konsep Pengajuan Penerjemahan Resmi';
+  certificationNumber: string;
+  promulgatedDate: string;
+  fileSize: string;
+  isOfficialTranslation: boolean;
+}
+
+// Variabel 1: Diseminasi Produk Hukum
+export interface DisseminationItem {
+  id: string;
+  title: string;
+  type: 'Infografis' | 'Videografis' | 'Podcast Hukum' | 'Media Sosial (Instagram)';
+  regulationReference: string;
+  date: string;
+  summary: string;
+  thumbnailUrl: string;
+  mediaUrl: string;
+  socialLink?: string;
+}
+
+// Variabel 3: Log Integrasi API JDIHN
+export interface ApiIntegrationLog {
+  id: string;
+  timestamp: string;
+  syncStatus: 'Sukses Sync' | 'Sinkronisasi Pending';
+  syncedCount: number;
+  apiUrl: string;
+  notes: string;
+}
+
+// Variabel 4: Layanan Onsite & Kios Elektronik
+export interface KioskQueueTicket {
+  ticketNumber: string;
+  visitorName: string;
+  serviceRequested: 'Pojok JDIH Konsultasi' | 'Cetak Salinan Sah' | 'Peminjaman Buku Hukum' | 'Akses Kios Digital';
+  timestamp: string;
+  boothNumber: string;
+}
+
+// Variabel 4: Laporan Evaluasi Mandiri 7 Aspek
+export interface SelfEvaluationAspect {
+  number: number;
+  title: string;
+  score: number;
+  maxScore: number;
+  achievements: string[];
+  actionPlans: string[];
 }
 
 export interface LegalServiceTicket {
@@ -78,18 +198,10 @@ export interface LegalServiceTicket {
   email: string;
   phone: string;
   institution: string;
-  requestType: 'Salinan Resmi Dokumen' | 'Konsultasi Peraturan' | 'Klarifikasi Status Hukum' | 'Penelitian Akademik';
+  requestType: 'Salinan Resmi Dokumen' | 'Konsultasi Peraturan' | 'Klarifikasi Status Hukum' | 'Permintaan Naskah Akademik';
   regulationTarget: string;
   notes: string;
-  status: 'Diterima' | 'Dalam Proses Telaah' | 'Selesai';
+  status: 'Diterima' | 'Diproses' | 'Selesai';
   createdAt: string;
 }
 
-export interface SatisfactionSurvey {
-  rating: number; // 1 to 5
-  speedRating: number;
-  accessibilityRating: number;
-  completenessRating: number;
-  feedback: string;
-  category: string;
-}

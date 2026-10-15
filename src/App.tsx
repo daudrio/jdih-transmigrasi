@@ -9,6 +9,10 @@ import { A11yRibbon } from './components/A11yRibbon';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { RegulationCatalog } from './components/RegulationCatalog';
+import { LawMakingSection } from './components/LawMakingSection';
+import { JudicialDecisionsSection } from './components/JudicialDecisionsSection';
+import { EnglishTranslationSection } from './components/EnglishTranslationSection';
+import { DisseminationSection } from './components/DisseminationSection';
 import { RegulatoryHierarchyView } from './components/RegulatoryHierarchyView';
 import { StatisticsSection } from './components/StatisticsSection';
 import { JDIHServicesSection } from './components/JDIHServicesSection';
@@ -20,11 +24,15 @@ import { SavedBookmarksDrawer } from './components/SavedBookmarksDrawer';
 import { SearchModal } from './components/SearchModal';
 import { A11yHelpModal } from './components/A11yHelpModal';
 import { GitHubModal } from './components/GitHubModal';
+import { EvaluationScoreboardModal } from './components/EvaluationScoreboardModal';
+import { OnsiteKioskModal } from './components/OnsiteKioskModal';
+import { SelfEvaluationModal } from './components/SelfEvaluationModal';
 import { INITIAL_REGULATIONS } from './data/regulationsData';
 import { Regulation } from './types/jdih';
 
 function MainAppContent() {
   const [activeTab, setActiveTab] = useState<string>('katalog');
+  const [lawMakingCategory, setLawMakingCategory] = useState<string>('all');
   const [regulations] = useState<Regulation[]>(INITIAL_REGULATIONS);
 
   // Search parameters shared from Hero to Catalog
@@ -39,6 +47,9 @@ function MainAppContent() {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState<boolean>(false);
   const [isGitHubModalOpen, setIsGitHubModalOpen] = useState<boolean>(false);
+  const [isScoreboardOpen, setIsScoreboardOpen] = useState<boolean>(false);
+  const [isKioskOpen, setIsKioskOpen] = useState<boolean>(false);
+  const [isSelfEvalOpen, setIsSelfEvalOpen] = useState<boolean>(false);
 
   // Global Keyboard Shortcuts
   useEffect(() => {
@@ -57,7 +68,6 @@ function MainAppContent() {
 
   const handleHeroSearch = () => {
     setActiveTab('katalog');
-    // Scroll smoothly to catalog
     const catalogElem = document.getElementById('katalog-section');
     if (catalogElem) {
       catalogElem.scrollIntoView({ behavior: 'smooth' });
@@ -90,10 +100,12 @@ function MainAppContent() {
         Lewati ke Konten Utama
       </a>
 
-      {/* Operational Accessibility Ribbon */}
+      {/* Operational Accessibility Ribbon with Direct Links to Assessment & Kiosk */}
       <A11yRibbon
         onOpenHelpModal={() => setIsHelpModalOpen(true)}
         onOpenGitHubModal={() => setIsGitHubModalOpen(true)}
+        onOpenScoreboard={() => setIsScoreboardOpen(true)}
+        onOpenSelfEval={() => setIsSelfEvalOpen(true)}
       />
 
       {/* Top Bar Header strictly following 3-Zone Contract */}
@@ -102,6 +114,13 @@ function MainAppContent() {
         setActiveTab={setActiveTab}
         onOpenSearch={() => setIsSearchModalOpen(true)}
         onOpenBookmarks={() => setIsBookmarksOpen(true)}
+        onOpenScoreboard={() => setIsScoreboardOpen(true)}
+        onOpenKiosk={() => setIsKioskOpen(true)}
+        onOpenSelfEval={() => setIsSelfEvalOpen(true)}
+        onSelectPembentukanSubmenu={(cat) => {
+          setLawMakingCategory(cat);
+          setActiveTab('pembentukan');
+        }}
       />
 
       {/* Hero Section */}
@@ -118,22 +137,26 @@ function MainAppContent() {
 
       {/* Main Content Area */}
       <main id="main-content" className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 w-full">
-        {/* Navigation Tabs Bar for mobile/quick switching */}
-        <div className="md:hidden pt-4 border-b border-stone-200 dark:border-stone-800 overflow-x-auto">
-          <div className="flex gap-2 min-w-max pb-2">
+        {/* Navigation Tabs Bar for mobile touch scrolling */}
+        <div className="lg:hidden pt-4 border-b border-stone-200 dark:border-stone-800 overflow-x-auto">
+          <div className="flex gap-2 min-w-max pb-2 text-xs">
             {[
               { id: 'katalog', label: 'Produk Hukum' },
+              { id: 'pembentukan', label: 'Pembentukan PUU' },
+              { id: 'putusan', label: 'Putusan & Monografi' },
+              { id: 'terjemahan', label: 'Terjemahan English' },
+              { id: 'diseminasi', label: 'Diseminasi Media' },
               { id: 'silsilah', label: 'Silsilah Regulasi' },
-              { id: 'statistik', label: 'Statistik' },
+              { id: 'statistik', label: 'Statistik & API' },
               { id: 'layanan', label: 'Layanan & SKM' },
               { id: 'berita', label: 'Warta' }
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-md ${
+                className={`px-3 py-1.5 rounded-md font-medium whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900'
+                    ? 'bg-emerald-800 text-white dark:bg-emerald-700 font-semibold'
                     : 'text-stone-600 dark:text-stone-400 bg-stone-100 dark:bg-stone-800'
                 }`}
               >
@@ -155,6 +178,15 @@ function MainAppContent() {
               externalSelectedYear={selectedYear}
             />
           )}
+
+          {activeTab === 'pembentukan' && <LawMakingSection initialCategory={lawMakingCategory} />}
+
+
+          {activeTab === 'putusan' && <JudicialDecisionsSection />}
+
+          {activeTab === 'terjemahan' && <EnglishTranslationSection />}
+
+          {activeTab === 'diseminasi' && <DisseminationSection />}
 
           {activeTab === 'silsilah' && (
             <RegulatoryHierarchyView
@@ -235,6 +267,25 @@ function MainAppContent() {
       <GitHubModal
         isOpen={isGitHubModalOpen}
         onClose={() => setIsGitHubModalOpen(false)}
+      />
+
+      <EvaluationScoreboardModal
+        isOpen={isScoreboardOpen}
+        onClose={() => setIsScoreboardOpen(false)}
+        onNavigateSection={(tab) => {
+          setActiveTab(tab);
+          setIsScoreboardOpen(false);
+        }}
+      />
+
+      <OnsiteKioskModal
+        isOpen={isKioskOpen}
+        onClose={() => setIsKioskOpen(false)}
+      />
+
+      <SelfEvaluationModal
+        isOpen={isSelfEvalOpen}
+        onClose={() => setIsSelfEvalOpen(false)}
       />
     </div>
   );

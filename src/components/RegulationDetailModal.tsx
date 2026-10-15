@@ -589,51 +589,159 @@ export const RegulationDetailModal: React.FC<RegulationDetailModalProps> = ({
             </div>
           )}
 
-          {/* TAB 5: RELATIONS */}
+          {/* TAB 5: RELATIONS & PELAKSANAAN & PEMBENTUKAN */}
           {activeTab === 'relations' && (
-            <div className="max-w-3xl mx-auto space-y-4">
-              <h4 className="font-serif font-bold text-sm text-stone-900 dark:text-stone-50 mb-2">
-                Hubungan Regulasi & Silsilah Hukum
-              </h4>
-              <p className="text-xs text-stone-500 dark:text-stone-400 mb-4">
-                Dokumen ini memiliki keterkaitan hukum langsung dengan produk legislasi berikut:
-              </p>
+            <div className="max-w-3xl mx-auto space-y-6">
+              {/* 1. Hubungan Regulasi */}
+              <div>
+                <h4 className="font-serif font-bold text-sm text-stone-900 dark:text-stone-50 mb-1">
+                  Hubungan Regulasi & Silsilah Perubahan / Pencabutan
+                </h4>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">
+                  Keterkaitan status keberlakuan yuridis dengan produk hukum lainnya:
+                </p>
 
-              <div className="space-y-3">
-                {regulation.relatedRegulations.map((rel, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-lg p-4 flex items-center justify-between gap-4"
-                  >
-                    <div>
-                      {/* Zero-Pill Relation Label */}
-                      <div className="flex items-center gap-2 text-xs font-semibold mb-1">
-                        <span className={`uppercase ${
-                          rel.relationType === 'Mencabut' || rel.relationType === 'Dicabut Oleh'
-                            ? 'text-rose-600 dark:text-rose-400'
-                            : 'text-emerald-700 dark:text-emerald-400'
-                        }`}>
-                          {rel.relationType}
-                        </span>
-                        <span className="text-stone-400" aria-hidden="true">·</span>
-                        <span className="text-stone-500 font-mono">Tahun {rel.year}</span>
-                      </div>
-                      <h5 className="font-serif font-semibold text-xs sm:text-sm text-stone-900 dark:text-stone-100">
-                        {rel.title}
-                      </h5>
-                    </div>
-
-                    {onSelectRelated && (
-                      <button
-                        onClick={() => onSelectRelated(rel.id)}
-                        className="px-3 py-1.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded transition-colors whitespace-nowrap flex items-center gap-1 shrink-0"
+                <div className="space-y-2.5">
+                  {regulation.relatedRegulations.length > 0 ? (
+                    regulation.relatedRegulations.map((rel, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-lg p-3.5 flex items-center justify-between gap-4"
                       >
-                        <span>Lihat Terkait</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
-                ))}
+                        <div>
+                          <div className="flex items-center gap-2 text-xs font-semibold mb-1">
+                            <span className={`uppercase ${
+                              rel.relationType === 'Mencabut' || rel.relationType === 'Dicabut Oleh'
+                                ? 'text-rose-600 dark:text-rose-400'
+                                : 'text-emerald-700 dark:text-emerald-400'
+                            }`}>
+                              {rel.relationType}
+                            </span>
+                            <span className="text-stone-400" aria-hidden="true">·</span>
+                            <span className="text-stone-500 font-mono">Tahun {rel.year}</span>
+                          </div>
+                          <h5 className="font-serif font-semibold text-xs sm:text-sm text-stone-900 dark:text-stone-100">
+                            {rel.title}
+                          </h5>
+                        </div>
+
+                        {onSelectRelated && (
+                          <button
+                            onClick={() => onSelectRelated(rel.id)}
+                            className="px-3 py-1.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded transition-colors whitespace-nowrap flex items-center gap-1 shrink-0"
+                          >
+                            <span>Buka</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-3 bg-stone-100 dark:bg-stone-800/50 rounded text-xs text-stone-500">
+                      Tidak ada catatan peraturan yang mengubah atau dicabut oleh instrumen ini.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 2. Peraturan Pelaksanaan (Memenuhi Temuan Slide 10) */}
+              <div className="border-t border-stone-200 dark:border-stone-800 pt-4">
+                <h4 className="font-serif font-bold text-sm text-stone-900 dark:text-stone-50 mb-1 flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+                  <span>Peraturan Pelaksanaan (Implementing Regulations)</span>
+                </h4>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">
+                  Keputusan Menteri, Surat Edaran, atau petunjuk teknis yang diterbitkan sebagai turunan pelaksanaan:
+                </p>
+
+                <div className="space-y-2.5">
+                  {regulation.implementingRegulations && regulation.implementingRegulations.length > 0 ? (
+                    regulation.implementingRegulations.map((imp, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-lg p-3.5 flex items-center justify-between gap-4"
+                      >
+                        <div>
+                          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 dark:text-emerald-400 mb-0.5">
+                            <span className="uppercase">Peraturan Pelaksanaan</span>
+                            <span className="text-stone-400" aria-hidden="true">·</span>
+                            <span className="text-stone-500 font-mono">Tahun {imp.year}</span>
+                          </div>
+                          <h5 className="font-serif font-semibold text-xs text-stone-900 dark:text-stone-100">
+                            {imp.title}
+                          </h5>
+                        </div>
+
+                        {onSelectRelated && (
+                          <button
+                            onClick={() => onSelectRelated(imp.id)}
+                            className="px-3 py-1.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded transition-colors whitespace-nowrap flex items-center gap-1 shrink-0"
+                          >
+                            <span>Buka</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-3 bg-stone-100 dark:bg-stone-800/50 rounded text-xs text-stone-500">
+                      Telah memenuhi ketentuan mandiri atau belum memerlukan aturan pelaksana lanjutan.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 3. Dokumen Terkait Pembentukan PUU (Memenuhi Temuan Slide 10) */}
+              <div className="border-t border-stone-200 dark:border-stone-800 pt-4">
+                <h4 className="font-serif font-bold text-sm text-stone-900 dark:text-stone-50 mb-1 flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+                  <span>Dokumen Pendukung Pembentukan PUU</span>
+                </h4>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">
+                  Naskah Akademik, Naskah Urgensi, Risalah Rapat Harmonisasi, dan Hasil Analisis-Evaluasi (Hasil Manjau/AE):
+                </p>
+
+                <div className="space-y-2.5">
+                  {regulation.lawMakingSupportDocs && regulation.lawMakingSupportDocs.length > 0 ? (
+                    regulation.lawMakingSupportDocs.map((doc, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-lg p-3.5 flex items-center justify-between gap-4"
+                      >
+                        <div>
+                          <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-400 uppercase tracking-wide block">
+                            {doc.type} ({doc.year})
+                          </span>
+                          <h5 className="font-serif font-semibold text-xs text-stone-900 dark:text-stone-100 mt-0.5">
+                            {doc.title}
+                          </h5>
+                          <span className="text-[11px] text-stone-400">{doc.fileSize}</span>
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            announce(`Mengunduh ${doc.title}`);
+                            const blob = new Blob([`${doc.type}\nJudul: ${doc.title}\nTahun: ${doc.year}`], { type: 'text/plain;charset=utf-8' });
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = `${doc.type}-${doc.year}.txt`;
+                            link.click();
+                            URL.revokeObjectURL(url);
+                          }}
+                          className="px-3 py-1.5 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-semibold rounded flex items-center gap-1 shrink-0"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span>Unduh</span>
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-3 bg-stone-100 dark:bg-stone-800/50 rounded text-xs text-stone-500">
+                      Tersedia dalam arsip naskah dinas biro hukum.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
