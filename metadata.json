@@ -1,0 +1,6 @@
+{
+  "name": "JDIH Kementerian Transmigrasi RI",
+  "description": "Jaringan Dokumentasi dan Informasi Hukum Kementerian Transmigrasi Republik Indonesia - Portal Resmi Produk Hukum, Peraturan, dan Layanan Informasi Hukum Terpadu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
